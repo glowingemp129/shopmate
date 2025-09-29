@@ -1,9 +1,11 @@
 import {useState} from "react";
 import { useFetch} from "../hooks/useFetch";
+import Spinner from '../assets/spinner.gif';
+
 
 export default function ProductList() {
-    const [url, setUrl] = useState("http://localhost:8000/products");
-    const {data : products} = useFetch(url);
+    const [url, setUrl] = useState("http://localhost:8000/product");
+    const {data : products, loading, error} = useFetch(url);
 
     return (
         <section>
@@ -12,6 +14,8 @@ export default function ProductList() {
                 <button onClick={() => setUrl("http://localhost:8000/products?in_stock_like=true")}>In Stock</button>
                 <button onClick={() => setUrl("http://localhost:8000/products?in_stock_like=false")}>Out of Stock</button>
             </div>
+            {loading && <p className="loading"><img src={Spinner} alt="loading..." /></p>}
+            {error && <p className="error">{error}</p>}
             {products && products.map((product) => (
                 <div className="card" key={product.id}>
                     <p className="id">{product.id}</p>
