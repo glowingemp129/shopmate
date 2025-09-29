@@ -4,7 +4,7 @@ import Spinner from '../assets/spinner.gif';
 
 
 export default function ProductList() {
-    const [url, setUrl] = useState("http://localhost:8000/product");
+    const [url, setUrl] = useState("http://localhost:8000/products");
     const {data : products, loading, error} = useFetch(url);
 
     return (
