@@ -6,20 +6,18 @@ export default function ProductList() {
     const [counter, setCounter] = useState(0);
 
     useEffect(() => {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => setProducts(data));
+        const fetchProducts = async () => {
+            const response = await fetch(url);
+            const data = await response.json();
+            setProducts(data);
+        }
+        fetchProducts();
     }, [url]);
-
-    useEffect(() => {
-        console.log(counter);
-    }, [counter]);
-
 
     return (
         <section>
             <div className="filter">
-                <button onClick={() => setCounter(counter + 1)}>{counter}</button>
+                <button onClick={() => setUrl("http://localhost:8000/products")}>All</button>
                 <button onClick={() => setUrl("http://localhost:8000/products?in_stock_like=true")}>In Stock</button>
                 <button onClick={() => setUrl("http://localhost:8000/products?in_stock_like=false")}>Out of Stock</button>
             </div>
