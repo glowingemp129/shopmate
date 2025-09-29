@@ -1,19 +1,11 @@
-import {useCallback, useEffect, useState} from "react";
+import {useState} from "react";
+import { useFetch} from "../hooks/useFetch";
+import Spinner from '../assets/spinner.gif';
+
 
 export default function ProductList() {
-    const [products, setProducts] = useState([]);
     const [url, setUrl] = useState("http://localhost:8000/products");
-
-    const fetchProducts = useCallback(async () => {
-        const response = await fetch(url);
-        const data = await response.json();
-        setProducts(data);
-    }, [url]);
-
-    useEffect(() => {
-        fetchProducts();
-        console.log("-");
-    }, [fetchProducts]);
+    const {data : products, loading, error} = useFetch(url);
 
     return (
         <section>
@@ -22,7 +14,9 @@ export default function ProductList() {
                 <button onClick={() => setUrl("http://localhost:8000/products?in_stock_like=true")}>In Stock</button>
                 <button onClick={() => setUrl("http://localhost:8000/products?in_stock_like=false")}>Out of Stock</button>
             </div>
-            {products.map((product) => (
+            {loading && <p className="loading"><img src={Spinner} alt="loading..." /></p>}
+            {error && <p className="error">{error}</p>}
+            {products && products.map((product) => (
                 <div className="card" key={product.id}>
                     <p className="id">{product.id}</p>
                     <p className="name">{product.name}</p>
